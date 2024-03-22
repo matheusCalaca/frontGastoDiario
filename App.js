@@ -4,6 +4,8 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import GastosScreen from './screens/GastosScreen';
+import CriarGastoScreen from './screens/CriarGastoScreen';
+
 
 
 const Stack = createStackNavigator();
@@ -14,6 +16,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Gastos">
         <Stack.Screen name="Gastos" component={GastosScreen} />
+        <Stack.Screen name="CriarGasto" component={CriarGastoScreen} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
