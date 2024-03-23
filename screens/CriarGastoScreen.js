@@ -7,6 +7,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { TextInputMask } from 'react-native-masked-text';
+import { convertDateBR, parseDate } from '../util/utils'; 
+
 
 const CriarGastoScreen = ({ navigation }) => {
     const [userId, setUserId] = useState('');
@@ -21,8 +23,6 @@ const CriarGastoScreen = ({ navigation }) => {
     const fetchCategorias = async () => {
         try {
             const response = await axios.get('http://192.168.5.241:8080/categoria');
-            console.log("============================");
-            console.log(response.data);
             setCategorias(response.data);
         } catch (error) {
             console.error('Erro ao obter categorias:', error.message);
@@ -77,10 +77,7 @@ const CriarGastoScreen = ({ navigation }) => {
     };
 
     const onChangeValor = (event) => {
-        console.log("event");
-        console.log(event);
         setValor(formatarValorParaFloat(event))
-        console.log(valor);
     };
 
     const formatarValorParaFloat = (valorFormatado) => {
@@ -101,23 +98,9 @@ const CriarGastoScreen = ({ navigation }) => {
 
         const dataFormatada = `${ano}-${mes}-${dia}`;
 
-        console.log(dataFormatada);
-
         return dataFormatada;
     }
 
-    const convertDateBR = (dataOriginal) => {
-
-        const ano = dataOriginal.getFullYear();
-        const mes = String(dataOriginal.getMonth() + 1).padStart(2, '0');
-        const dia = String(dataOriginal.getDate()).padStart(2, '0');
-
-        const dataFormatada = `${dia}/${mes}/${ano}`;
-
-        console.log(dataFormatada);
-
-        return dataFormatada;
-    }
 
     return (
         <View style={styles.container}>
