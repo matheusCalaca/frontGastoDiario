@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
-import { AuthContext } from '../App'; // Importando o contexto de autenticação
 import StorageUtil from '../util/StorageUtil';
+import AuthContext from '../util/AuthContext'; // Importando o contexto de autenticação
 
 const LoginScreen = ({ navigation }) => {
-    const { setToken } = useContext(AuthContext); // Obtendo a função setToken do contexto de autenticação
+    const { setToken } = useContext(AuthContext);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
