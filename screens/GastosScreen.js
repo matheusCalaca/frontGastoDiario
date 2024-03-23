@@ -5,10 +5,8 @@ import { faCalendarAlt, faTags, faMoneyBill } from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { convertDateBR, parseDate } from '../util/utils';
 import StorageUtil from '../util/StorageUtil';
-import { AuthContext } from '../App'; // Importando o contexto de autenticação
 
 const GastosScreen = ({ navigation }) => {
-    const { setToken } = useContext(AuthContext); // Obtendo a função setToken do contexto de autenticação
 
     const [gastos, setGastos] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -60,21 +58,6 @@ const GastosScreen = ({ navigation }) => {
         navigation.navigate('CriarGasto');
     };
 
-    const handleLogout = async () => {
-        try {
-            // Remover o token de acesso
-            await StorageUtil.clearItem("accessToken");
-            // Limpar o estado do token
-            setAccessToken(null);
-            setToken(null)
-            // Navegar de volta para a tela de login
-            navigation.navigate('Login');
-        } catch (error) {
-            console.log(error);
-            Alert.alert('Erro', 'Erro ao fazer logout.');
-        }
-    };
-
     const renderGastoItem = ({ item }) => (
         <TouchableOpacity style={styles.item}>
             <Text style={styles.itemName}>{item.nome}</Text>
@@ -118,10 +101,6 @@ const GastosScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.addButton} onPress={navigateToCriarGasto}>
                 <Text style={styles.addButtonText}>Adicionar Gasto</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Text style={styles.logoutButtonText}>Logout</Text>
-            </TouchableOpacity>
         </View>
     );
 };
@@ -155,18 +134,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     addButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    logoutButton: {
-        backgroundColor: '#dc3545',
-        paddingVertical: 15,
-        alignItems: 'center',
-        borderRadius: 5,
-        marginTop: 10,
-    },
-    logoutButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',

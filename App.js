@@ -4,6 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import GastosScreen from './screens/GastosScreen';
 import CriarGastoScreen from './screens/CriarGastoScreen';
 import LoginScreen from './screens/LoginScreen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View } from 'react-native';
+import StorageUtil from './util/StorageUtil';
 
 const Stack = createStackNavigator();
 
@@ -13,11 +16,46 @@ export const AuthContext = createContext();
 export default function App() {
   const [userToken, setUserToken] = useState(null);
 
+
   // Função para definir o token do usuário após o login
   const setToken = token => {
     setUserToken(token);
   };
-  
+
+  const handleLogout = async () => {
+    try {
+      // Remover o token de acesso
+      await StorageUtil.clearItem("accessToken");
+      // Limpar o estado do token
+      setUserToken(null)
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro', 'Erro ao fazer logout.');
+    }
+  };
+
+
+
+  const header = (title) => {
+    return {
+      title: title,
+      headerStyle: {
+        backgroundColor: '#28023d',
+      },
+      headerRight: () => (
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <View style={styles.buttonContainer}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </View>
+        </TouchableOpacity>
+      ),
+      headerTintColor: '#ffa804',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    };
+  }
+
 
   return (
     <AuthContext.Provider value={{ userToken, setToken }}>
@@ -35,17 +73,22 @@ export default function App() {
       </NavigationContainer>
     </AuthContext.Provider>
   );
-}
+};
 
-function header(title) {
-  return {
-    title: title,
-    headerStyle: {
-      backgroundColor: '#28023d',
-    },
-    headerTintColor: '#ffa804',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-  };
-}
+
+const styles = StyleSheet.create({
+  logoutButton: {
+    marginRight: 10,
+  },
+  buttonContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    backgroundColor: '#dc3545',
+  },
+  logoutButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
