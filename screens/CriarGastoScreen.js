@@ -1,12 +1,12 @@
-import React, {  useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
-
+import { TextInputMask } from 'react-native-masked-text';
 
 const CriarGastoScreen = ({ navigation }) => {
     const [userId, setUserId] = useState('');
@@ -76,6 +76,23 @@ const CriarGastoScreen = ({ navigation }) => {
         setDataCompra(currentDate);
     };
 
+    const onChangeValor = (event) => {
+        console.log("event");
+        console.log(event);
+        setValor(formatarValorParaFloat(event))
+        console.log(valor);
+    };
+
+    const formatarValorParaFloat = (valorFormatado) => {
+        // Remove o símbolo da moeda e substitui vírgula por ponto
+        const valorSemSimbolo = valorFormatado.replace('R$', '').replace(/\./g, '').replace(',', '.');
+    
+        // Converte para float
+        const valorFloat = parseFloat(valorSemSimbolo);
+    
+        return valorFloat;
+    };
+
     const convertDate = (dataOriginal) => {
 
         const ano = dataOriginal.getFullYear();
@@ -116,11 +133,19 @@ const CriarGastoScreen = ({ navigation }) => {
                 value={nome}
                 onChangeText={setNome}
             />
-            <TextInput
+            <TextInputMask
                 style={styles.input}
                 placeholder="Valor"
                 value={valor}
-                onChangeText={setValor}
+                onChangeText={onChangeValor}
+                type={'money'}
+                options={{
+                    precision: 2, // número de casas decimais
+                    separator: ',', // separador decimal
+                    delimiter: '.', // separador de milhares
+                    unit: 'R$', // símbolo da moeda
+                    suffixUnit: '', // sufixo da unidade (por exemplo, 'USD')
+                }}
             />
             <TouchableOpacity onPressIn={showDatepicker}>
                 <TextInput
@@ -140,12 +165,6 @@ const CriarGastoScreen = ({ navigation }) => {
                     onChange={onChangeDate}
                 />
             )}
-            {/* <TextInput
-                style={styles.input}
-                placeholder="ID da categoria"
-                value={categoriaId}
-                onChangeText={setCategoriaId}
-            /> */}
             <Picker
                 selectedValue={categoriaId}
                 style={styles.input}

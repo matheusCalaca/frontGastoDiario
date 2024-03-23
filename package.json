@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-native": "0.73.6",
     "react-native-gesture-handler": "~2.14.0",
+    "react-native-masked-text": "^1.13.0",
     "react-native-ui-datepicker": "^2.0.2",
     "react-native-web": "^0.19.10"
   },
