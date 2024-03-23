@@ -32,6 +32,8 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.input}
                 placeholder="Nome de usuário"
                 value={username}
+                autoComplete='email'
+                inputMode='email'
                 onChangeText={text => setUsername(text)}
             />
             <TextInput
@@ -42,7 +44,8 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={text => setPassword(text)}
             />
             <Button
-                title="Login"
+                title="Entrar"
+                color="#007bff"
                 onPress={handleLogin}
             />
         </View>
@@ -64,11 +67,12 @@ const styles = StyleSheet.create({
     input: {
         width: '80%',
         height: 40,
+        marginBottom: 20,
+        borderRadius: 6,
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 5,
         paddingHorizontal: 10,
-        marginBottom: 10,
+        fontSize: 16,
     },
 });
 
