@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { TextInputMask } from 'react-native-masked-text';
-import { convertDateBR, parseDate } from '../util/utils'; 
-
+import { convertDateBR } from '../util/utils'; 
 
 const CriarGastoScreen = ({ navigation }) => {
-    const [userId, setUserId] = useState('');
+    const [userId, setUserId] = useState(1);
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
     const [dataCompra, setDataCompra] = useState(new Date());
@@ -49,7 +47,7 @@ const CriarGastoScreen = ({ navigation }) => {
             // Verifique a resposta da solicitação
             if (response.status === 201) {
                 // Se a solicitação for bem-sucedida, faça alguma ação, como limpar os campos de entrada
-                setUserId('');
+                setUserId(1);
                 setNome('');
                 setValor('');
                 setDataCompra(new Date());
@@ -106,12 +104,6 @@ const CriarGastoScreen = ({ navigation }) => {
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
-                placeholder="ID do usuário"
-                value={userId}
-                onChangeText={setUserId}
-            />
-            <TextInput
-                style={styles.input}
                 placeholder="Nome do gasto"
                 value={nome}
                 onChangeText={setNome}
@@ -130,9 +122,9 @@ const CriarGastoScreen = ({ navigation }) => {
                     suffixUnit: '', // sufixo da unidade (por exemplo, 'USD')
                 }}
             />
-            <TouchableOpacity onPressIn={showDatepicker}>
+            <TouchableOpacity onPressIn={showDatepicker} style={styles.dateInputContainer}>
                 <TextInput
-                    style={styles.input}
+                    style={styles.dateInput}
                     placeholder="Data da compra (AAAA-MM-DD)"
                     value={convertDateBR(dataCompra)}
                     editable={false}
@@ -170,18 +162,35 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     input: {
-        marginBottom: 10,
+        marginBottom: 20,
+        paddingHorizontal: 10,
+        paddingVertical: 14,
+        borderRadius: 4,
+       borderWidth: 1,
+        borderColor: '#ccc',
+        fontSize: 16,
+    },
+    dateInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+        paddingHorizontal: 10,
+        paddingVertical: 14,
+        borderRadius: 4,
         borderWidth: 1,
         borderColor: '#ccc',
-        padding: 10,
+        overflow: 'hidden',
+    },
+    dateInput: {
+        flex: 1,
+        fontSize: 16,
     },
     icon: {
-        position: 'absolute',
-        top: 15,
-        right: 15,
-        zIndex: 1,
-        color: '#888', // Cor do ícone
-    },
+        marginRight: 10,
+        fontSize: 20,
+        color: '#888',
+   },
 });
 
 export default CriarGastoScreen;
