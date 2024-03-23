@@ -6,30 +6,53 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { TextInputMask } from 'react-native-masked-text';
-import { convertDateBR } from '../util/utils'; 
+import { convertDateBR } from '../util/utils';
+import StorageUtil from '../util/StorageUtil';
 
 const CriarGastoScreen = ({ navigation }) => {
-    const [userId, setUserId] = useState(1);
+    const [userId, setUserId] = useState(3);
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
     const [dataCompra, setDataCompra] = useState(new Date());
     const [categoriaId, setCategoriaId] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [showDataCompra, setShowDataCompra] = useState(false);
+    const [showScreen, setShowScreen] = useState(false);
+    const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
+
+    useEffect(() => {
+        retrivetoken();
+    }, []);
+
+    useEffect(() => {
+        if (accessToken) {
+            fetchCategorias();
+            setShowScreen(true);
+            console.log("token recuperado");
+        }
+    }, [accessToken]);
+
+    const retrivetoken = async () => {
+        const token = await StorageUtil.retrieveItem("accessToken");
+        console.log(token);
+        setAccessToken(token);
+    }
+
 
     // Função para buscar categorias do backend
     const fetchCategorias = async () => {
         try {
-            const response = await axios.get('http://192.168.5.241:8080/categoria');
+            const response = await axios.get('http://192.168.5.241:8080/categoria', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
+                }
+            });
             setCategorias(response.data);
         } catch (error) {
             console.error('Erro ao obter categorias:', error.message);
         }
     };
 
-    useEffect(() => {
-        fetchCategorias(); // Chama a função de busca quando o componente é montado
-    }, []); // Chama apenas uma vez, quando o componente é montado
 
     const criarGasto = async () => {
         try {
@@ -42,12 +65,16 @@ const CriarGastoScreen = ({ navigation }) => {
             }
             console.log("tentativa de criação " + gastoDto.nome + " " + gastoDto.valor + " " + gastoDto.dataCompra + " " + gastoDto.categoriaId + " ");
             // Realize a solicitação HTTP POST para o endpoint 'gasto'
-            const response = await axios.post('http://192.168.5.241:8080/gasto', gastoDto);
+            const response = await axios.post('http://192.168.5.241:8080/gasto', gastoDto, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
+                }
+            });
 
             // Verifique a resposta da solicitação
             if (response.status === 201) {
                 // Se a solicitação for bem-sucedida, faça alguma ação, como limpar os campos de entrada
-                setUserId(1);
+                setUserId(3);
                 setNome('');
                 setValor('');
                 setDataCompra(new Date());
@@ -81,10 +108,10 @@ const CriarGastoScreen = ({ navigation }) => {
     const formatarValorParaFloat = (valorFormatado) => {
         // Remove o símbolo da moeda e substitui vírgula por ponto
         const valorSemSimbolo = valorFormatado.replace('R$', '').replace(/\./g, '').replace(',', '.');
-    
+
         // Converte para float
         const valorFloat = parseFloat(valorSemSimbolo);
-    
+
         return valorFloat;
     };
 
@@ -166,7 +193,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 14,
         borderRadius: 4,
-       borderWidth: 1,
+        borderWidth: 1,
         borderColor: '#ccc',
         fontSize: 16,
     },
@@ -190,7 +217,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         fontSize: 20,
         color: '#888',
-   },
+    },
 });
 
 export default CriarGastoScreen;

@@ -4,31 +4,59 @@ import axios from 'axios';
 import { faCalendarAlt, faTags, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { convertDateBR, parseDate } from '../util/utils';
-
+import StorageUtil from '../util/StorageUtil';
 
 const GastosScreen = ({ navigation }) => {
     const [gastos, setGastos] = useState([]);
-    const [refreshing, setRefreshing] = useState(false); // Estado para controlar se a atualização está em andamento
-    const [loading, setLoading] = useState(true); // Estado para controlar se os dados estão sendo carregados
+    const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
+
+    // useEffect(() => {
+    //     fetchGastos();
+    // }, []);
 
     useEffect(() => {
-        fetchGastos();
+        retrivetoken();
     }, []);
+    
+    useEffect(() => {
+        if (accessToken) {
+            fetchGastos();
+        }
+    }, [accessToken]);
+
+    const retrivetoken = async () => {
+        const token = await StorageUtil.retrieveItem("accessToken");
+        console.log(token);
+        setAccessToken(token);
+    }
 
     const onRefresh = async () => {
-        setRefreshing(true); // Inicia a animação de atualização
-        await fetchGastos(); // Atualiza os gastos
-        setRefreshing(false); // Encerra a animação de atualização
+        setRefreshing(true);
+        await fetchGastos();
+        setRefreshing(false);
     };
 
     const fetchGastos = async () => {
         try {
-            const response = await axios.get('http://192.168.5.241:8080/gasto/1/3/2024');
+
+            console.log("fetchGastos");
+            console.log(accessToken);
+            if (accessToken == null || accessToken == undefined) {
+                console.log(accessToken);
+                retrivetoken()
+            }
+            const response = await axios.get('http://192.168.5.241:8080/gasto/3/3/2024', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
+                }
+            });
             setGastos(response.data);
         } catch (error) {
             console.error('Erro ao buscar gastos:', error);
         } finally {
-            setLoading(false); // Marca que o carregamento dos dados foi concluído
+            setLoading(false);
         }
     };
 
@@ -48,7 +76,6 @@ const GastosScreen = ({ navigation }) => {
                 <Text style={styles.itemText}>
                     {convertDateBR(parseDate(item.dataCompra))}
                 </Text>
-
             </View>
             <View style={styles.itemRow}>
                 <FontAwesomeIcon icon={faTags} style={styles.icon} />
@@ -68,7 +95,7 @@ const GastosScreen = ({ navigation }) => {
                     data={gastos}
                     renderItem={renderGastoItem}
                     keyExtractor={(item, index) => index.toString()}
-                    refreshControl={ // Adiciona o RefreshControl à View
+                    refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
@@ -118,11 +145,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     itemName: {
-        fontSize: 20, // Ajuste o tamanho da fonte conforme necessário
+        fontSize: 20,
         fontWeight: 'bold',
-        color: '#000', // Cor preta escura
-        textAlign: 'center', // Centraliza o texto horizontalmente
-        marginTop: 5, // Adiciona um espaço superior para separar do texto abaixo
+        color: '#000',
+        textAlign: 'center',
+        marginTop: 5,
     },
     itemRow: {
         flexDirection: 'row',
