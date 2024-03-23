@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
+import { AuthContext } from '../App'; // Importando o contexto de autenticação
 import StorageUtil from '../util/StorageUtil';
 
-
-
 const LoginScreen = ({ navigation }) => {
+    const { setToken } = useContext(AuthContext); // Obtendo a função setToken do contexto de autenticação
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,9 +17,10 @@ const LoginScreen = ({ navigation }) => {
                 password: password
             });
             const accessToken = response.data.accessToken;
-            // Salvar o token de acesso em AsyncStorage ou Context API para uso posterior
-            // Navegar para a próxima tela após o login bem-sucedido
             StorageUtil.storeItem("accessToken", accessToken)
+
+            // Salvar o token de acesso no contexto de autenticação
+            setToken(accessToken);
             navigation.navigate('Gastos');
         } catch (error) {
             Alert.alert('Erro', 'Usuário ou senha inválidos.');

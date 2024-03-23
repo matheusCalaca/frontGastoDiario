@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { createContext, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import GastosScreen from './screens/GastosScreen';
@@ -9,19 +7,35 @@ import LoginScreen from './screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Gastos" component={GastosScreen} options={header("Gastos")} />
-        <Stack.Screen name="CriarGasto" component={CriarGastoScreen} options={header("Criar Gasto")} />
-      </Stack.Navigator>
+// Criar um contexto de autenticação
+export const AuthContext = createContext();
 
-    </NavigationContainer>
+export default function App() {
+  const [userToken, setUserToken] = useState(null);
+
+  // Função para definir o token do usuário após o login
+  const setToken = token => {
+    setUserToken(token);
+  };
+  
+
+  return (
+    <AuthContext.Provider value={{ userToken, setToken }}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {userToken ? (
+            <>
+              <Stack.Screen name="Gastos" component={GastosScreen} options={header("Gastos")} />
+              <Stack.Screen name="CriarGasto" component={CriarGastoScreen} options={header("Criar Gasto")} />
+            </>
+          ) : (
+            <Stack.Screen name="Login" component={LoginScreen} />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
-
 
 function header(title) {
   return {
@@ -34,13 +48,4 @@ function header(title) {
       fontWeight: 'bold',
     },
   };
-
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
