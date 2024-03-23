@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import React, {  useState, useEffect  } from 'react';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -13,7 +14,24 @@ const CriarGastoScreen = ({ navigation }) => {
     const [valor, setValor] = useState('');
     const [dataCompra, setDataCompra] = useState(new Date());
     const [categoriaId, setCategoriaId] = useState('');
+    const [categorias, setCategorias] = useState([]);
     const [showDataCompra, setShowDataCompra] = useState(false);
+
+    // Função para buscar categorias do backend
+    const fetchCategorias = async () => {
+        try {
+            const response = await axios.get('http://192.168.5.241:8080/categoria');
+            console.log("============================");
+            console.log(response.data);
+            setCategorias(response.data);
+        } catch (error) {
+            console.error('Erro ao obter categorias:', error.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategorias(); // Chama a função de busca quando o componente é montado
+    }, []); // Chama apenas uma vez, quando o componente é montado
 
     const criarGasto = async () => {
         try {
@@ -34,8 +52,8 @@ const CriarGastoScreen = ({ navigation }) => {
                 setUserId('');
                 setNome('');
                 setValor('');
-                setDataCompra('');
-                setCategoriaId('');
+                setDataCompra(new Date());
+                setCategoriaId([]);
                 alert('Gasto criado com sucesso!');
                 navigation.navigate('Gastos');
             } else {
@@ -122,12 +140,22 @@ const CriarGastoScreen = ({ navigation }) => {
                     onChange={onChangeDate}
                 />
             )}
-            <TextInput
+            {/* <TextInput
                 style={styles.input}
                 placeholder="ID da categoria"
                 value={categoriaId}
                 onChangeText={setCategoriaId}
-            />
+            /> */}
+            <Picker
+                selectedValue={categoriaId}
+                style={styles.input}
+                onValueChange={(itemValue, itemIndex) => setCategoriaId(itemValue)}
+            >
+                <Picker.Item label="Selecione uma categoria" value="" />
+                {categorias.map((categoria) => (
+                    <Picker.Item key={categoria.id} label={categoria.categoria} value={categoria.id} />
+                ))}
+            </Picker>
             <Button title="Criar Gasto" onPress={criarGasto} />
         </View>
     );
