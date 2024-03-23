@@ -14,14 +14,28 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Gastos" component={GastosScreen} />
-        <Stack.Screen name="CriarGasto" component={CriarGastoScreen} />
+        <Stack.Screen name="Gastos" component={GastosScreen} options={header("Gastos")} />
+        <Stack.Screen name="CriarGasto" component={CriarGastoScreen} options={header("Criar Gasto")} />
       </Stack.Navigator>
 
     </NavigationContainer>
   );
 }
 
+
+function header(title) {
+  return {
+    title: title,
+    headerStyle: {
+      backgroundColor: '#28023d',
+    },
+    headerTintColor: '#ffa804',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
