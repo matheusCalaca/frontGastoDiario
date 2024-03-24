@@ -7,18 +7,10 @@ import StorageUtil from '../util/StorageUtil';
 const AnimatedPieChart = Animated.createAnimatedComponent(PieChart);
 
 
-const ResumoGastoComponent = () => {
+const ResumoGastoComponent = ({ userId, month, year }) => {
     const [resumo, setResumo] = useState(null);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
     const [animatedValue, setAnimatedValue] = useState(new Animated.Value(0));
-
-    useEffect(() => {
-        Animated.timing(animatedValue, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-        }).start();
-    }, []);
 
     const interpolatedValue = animatedValue.interpolate({
         inputRange: [0, 1],
@@ -33,8 +25,13 @@ const ResumoGastoComponent = () => {
     useEffect(() => {
         if (accessToken) {
             fetchResumo();
+            Animated.timing(animatedValue, {
+                toValue: 1,
+                duration: 1000,
+                useNativeDriver: true,
+            }).start();
         }
-    }, [accessToken]);
+    }, [accessToken, userId, month, year]);
 
     const retriveToken = async () => {
         const token = await StorageUtil.retrieveItem("accessToken");
@@ -43,7 +40,7 @@ const ResumoGastoComponent = () => {
 
     const fetchResumo = async () => {
         try {
-            const response = await axios.get('http://192.168.5.241:8080/resumo/3/3/2024', {
+            const response = await axios.get(`http://192.168.5.241:8080/resumo/${userId}/${month}/${year}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -80,7 +77,7 @@ const ResumoGastoComponent = () => {
         <>
             <View style={styles.saldoContainer}>
                 <Text style={[styles.saldoText, { color: saldo > 0 ? '#00ff51' : 'red' }]}>
-                    Saldo: {saldo} {/* Assumindo que o valor é um BigDecimal */}
+                    Saldo: R$ {resumo.saldo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                 </Text>
                 <Text style={[styles.saldoTextSub, { color: '#00ff51' }]}>
                     ganhos: {ganhos}
@@ -92,7 +89,7 @@ const ResumoGastoComponent = () => {
             <View style={styles.container}>
 
                 <View style={styles.chartContainer}>
-                    <PieChart
+                    <AnimatedPieChart
                         data={chartData}
                         height={80}
                         width={chartWidth}
@@ -103,6 +100,8 @@ const ResumoGastoComponent = () => {
                         backgroundColor="transparent"
                         paddingLeft={"5"}
                         absolute
+                        progress={interpolatedValue}
+
                     />
 
                 </View>
@@ -129,9 +128,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     chartContainer: {
-        // flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'flex-end',
     },
     saldoText: {
         fontSize: 20,

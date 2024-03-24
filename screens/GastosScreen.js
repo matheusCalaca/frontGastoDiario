@@ -59,7 +59,7 @@ const GastosScreen = ({ navigation }) => {
         <>
             <View style={styles.container}>
                 <View style={styles.container}>
-                    <ResumoGastoComponent />
+                    <ResumoGastoComponent userId={3} month={selectedMonth} year={selectedYear} />
                 </View>
                 <MonthYearSelector
                     selectedMonth={selectedMonth}
