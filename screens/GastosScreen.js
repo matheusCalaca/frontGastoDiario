@@ -5,6 +5,7 @@ import StorageUtil from '../util/StorageUtil';
 import GastosList from '../components/GastosList'
 import AddGastoButton from '../components/AddGastoButton'
 import MonthYearSelector from '../components/MonthYearSelector';
+import ResumoGastoComponent from '../components/ResumoGastoComponent';
 
 const GastosScreen = ({ navigation }) => {
     const [gastos, setGastos] = useState([]);
@@ -62,6 +63,7 @@ const GastosScreen = ({ navigation }) => {
                 onMonthChange={handleMonthChange}
                 onYearChange={handleYearChange}
             />
+            <ResumoGastoComponent />
             <Text style={styles.title}>Gastos do Usuário Calaça</Text>
             <GastosList gastos={gastos} onRefresh={fetchGastos} />
             <AddGastoButton onPress={() => navigation.navigate('CriarGasto')} />
