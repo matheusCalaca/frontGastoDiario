@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { PieChart } from 'react-native-chart-kit';
+import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
+import { PieChart, StackedBarChart } from 'react-native-chart-kit';
 import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
+
+const AnimatedPieChart = Animated.createAnimatedComponent(PieChart);
+
 
 const ResumoGastoComponent = () => {
     const [resumo, setResumo] = useState(null);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
+    const [animatedValue, setAnimatedValue] = useState(new Animated.Value(0));
+
+    useEffect(() => {
+        Animated.timing(animatedValue, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
+    }, []);
+
+    const interpolatedValue = animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0%', '100%'],
+    });
+
 
     useEffect(() => {
         retriveToken();
@@ -55,44 +73,78 @@ const ResumoGastoComponent = () => {
         },
     ];
 
+    const screenWidth = Dimensions.get('window').width;
+    const chartWidth = screenWidth * 0.5; // 50% da largura da tela
+
     return (
-        <View style={styles.container}>
-            <PieChart
-                data={chartData}
-                width={200}
-                height={200}
-                chartConfig={{
-                    backgroundGradientFrom: '#1E2923',
-                    backgroundGradientTo: '#08130D',
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                }}
-                accessor="value"
-                backgroundColor="transparent"
-                paddingLeft="15"
-                absolute // Para exibir valores absolutos ao lado das porcentagens no gráfico de pizza
-            />
+        <>
             <View style={styles.saldoContainer}>
-                <Text style={[styles.saldoText, { color: saldo > 0 ? 'green' : 'red' }]}>
+                <Text style={[styles.saldoText, { color: saldo > 0 ? '#00ff51' : 'red' }]}>
                     Saldo: {saldo} {/* Assumindo que o valor é um BigDecimal */}
                 </Text>
+                <Text style={[styles.saldoTextSub, { color: '#00ff51' }]}>
+                    ganhos: {ganhos}
+                </Text>
+                <Text style={[styles.saldoTextSub, { color: '#db3e32' }]}>
+                    gastos: {gastos}
+                </Text>
             </View>
-        </View>
+            <View style={styles.container}>
+
+                <View style={styles.chartContainer}>
+                    <PieChart
+                        data={chartData}
+                        height={80}
+                        width={chartWidth}
+                        chartConfig={{
+                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        }}
+                        accessor="value"
+                        backgroundColor="transparent"
+                        paddingLeft={"5"}
+                        absolute
+                    />
+
+                </View>
+
+
+            </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
+        flex: 1,
+        margin: 5,
+        borderRadius: 10,
+        height: 200,
+        flexDirection: 'row', // Define a direção dos elementos como linha
     },
     saldoContainer: {
-        marginTop: 20,
+        flex: 1,
+        flexDirection: 'row',
+        width: 100,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+    },
+    chartContainer: {
+        // flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'flex-end',
     },
     saldoText: {
         fontSize: 20,
         fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 5,
     },
+    saldoTextSub: {
+        fontSize: 10,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 5,
+    }
 });
 
 export default ResumoGastoComponent;

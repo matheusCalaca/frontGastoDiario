@@ -7,8 +7,8 @@ import AuthContext from '../util/AuthContext'; // Importando o contexto de auten
 const LoginScreen = ({ navigation }) => {
     const { setToken } = useContext(AuthContext);
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('matheusfcalaca@gmail.com');
+    const [password, setPassword] = useState('123');
 
     const handleLogin = async () => {
         try {

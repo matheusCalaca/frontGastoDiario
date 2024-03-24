@@ -56,18 +56,23 @@ const GastosScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <MonthYearSelector
-                selectedMonth={selectedMonth}
-                selectedYear={selectedYear}
-                onMonthChange={handleMonthChange}
-                onYearChange={handleYearChange}
-            />
-            <ResumoGastoComponent />
-            <Text style={styles.title}>Gastos do Usuário Calaça</Text>
-            <GastosList gastos={gastos} onRefresh={fetchGastos} />
-            <AddGastoButton onPress={() => navigation.navigate('CriarGasto')} />
-        </View>
+        <>
+            <View style={styles.container}>
+                <View style={styles.container}>
+                    <ResumoGastoComponent />
+                </View>
+                <MonthYearSelector
+                    selectedMonth={selectedMonth}
+                    selectedYear={selectedYear}
+                    onMonthChange={handleMonthChange}
+                    onYearChange={handleYearChange}
+                />
+
+                <Text style={styles.title}>Gastos do Usuário Calaça</Text>
+                <GastosList gastos={gastos} onRefresh={fetchGastos} />
+                <AddGastoButton onPress={() => navigation.navigate('CriarGasto')} />
+            </View>
+        </>
     );
 };
 
