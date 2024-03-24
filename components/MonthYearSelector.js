@@ -1,14 +1,10 @@
-import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearChange }) => {
-    // Implement your preferred UI for month-year selection here
-    // Use a Picker for native UI or 3rd-party libraries for custom designs
-
     const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const years = generateYearsArray();
-
 
     const handleMonthSelected = (itemValue) => {
         onMonthChange(itemValue);
@@ -19,8 +15,9 @@ const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearC
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <Picker
+                style={styles.picker}
                 selectedValue={selectedMonth}
                 onValueChange={handleMonthSelected}
             >
@@ -29,6 +26,7 @@ const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearC
                 ))}
             </Picker>
             <Picker
+                style={styles.picker}
                 selectedValue={selectedYear}
                 onValueChange={handleYearSelected}
             >
@@ -40,6 +38,16 @@ const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearC
     );
 };
 
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row', // Organiza os pickers em uma linha
+        justifyContent: 'space-between', // Alinha os pickers nas extremidades
+        paddingHorizontal: 20, // Espaçamento horizontal para separar os pickers
+    },
+    picker: {
+        flex: 1, // Ocupa todo o espaço disponível
+    },
+});
 
 function generateYearsArray() {
     const currentYear = new Date().getFullYear();
