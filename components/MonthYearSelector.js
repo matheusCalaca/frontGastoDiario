@@ -5,6 +5,8 @@ import { Picker } from '@react-native-picker/picker';
 const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearChange }) => {
     const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const years = generateYearsArray();
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
 
     const handleMonthSelected = (itemValue) => {
         onMonthChange(itemValue);
@@ -22,7 +24,7 @@ const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearC
                 onValueChange={handleMonthSelected}
             >
                 {months.map((month, index) => (
-                    <Picker.Item key={index} value={index + 1} label={month} />
+                    <Picker.Item key={index} value={index + 1} label={month} color={currentMonth === index + 1 ? 'blue' : 'black'} />
                 ))}
             </Picker>
             <Picker
@@ -31,7 +33,7 @@ const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearC
                 onValueChange={handleYearSelected}
             >
                 {years.map((year) => (
-                    <Picker.Item key={year} value={year} label={`${year}`} />
+                    <Picker.Item key={year} value={year} label={`${year}`} color={currentYear === year ? 'blue' : 'black'} />
                 ))}
             </Picker>
         </View>
@@ -40,12 +42,12 @@ const MonthYearSelector = ({ selectedMonth, selectedYear, onMonthChange, onYearC
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row', // Organiza os pickers em uma linha
-        justifyContent: 'space-between', // Alinha os pickers nas extremidades
-        paddingHorizontal: 20, // Espaçamento horizontal para separar os pickers
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
     },
     picker: {
-        flex: 1, // Ocupa todo o espaço disponível
+        flex: 1,
     },
 });
 
