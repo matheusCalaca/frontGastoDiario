@@ -16,7 +16,7 @@ class StorageUtil {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
-        console.log(`Item ${key} recuperado com sucesso:`,  JSON.parse(value));
+        console.log(`Item ${key} recuperado com sucesso:`);
         return JSON.parse(value);
       } else {
         console.log(`Nenhum item encontrado para a chave ${key}.`);
