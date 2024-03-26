@@ -13,10 +13,10 @@ const CriarGastoScreen = ({ navigation }) => {
     const [userId, setUserId] = useState(3);
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
-    const [dataCompra, setDataCompra] = useState(new Date());
+    const [data, setData] = useState(new Date());
     const [categoriaId, setCategoriaId] = useState('');
     const [categorias, setCategorias] = useState([]);
-    const [showDataCompra, setShowDataCompra] = useState(false);
+    const [showData, setShowData] = useState(false);
     const [showScreen, setShowScreen] = useState(false);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
 
@@ -60,10 +60,10 @@ const CriarGastoScreen = ({ navigation }) => {
                 userId: userId,
                 nome: nome,
                 valor: parseFloat(valor), // Converta o valor para um número
-                dataCompra: convertDate(dataCompra),
+                data: convertDate(data),
                 categoriaId: categoriaId
             }
-            console.log("tentativa de criação " + gastoDto.nome + " " + gastoDto.valor + " " + gastoDto.dataCompra + " " + gastoDto.categoriaId + " ");
+            console.log("tentativa de criação " + gastoDto.nome + " " + gastoDto.valor + " " + gastoDto.data + " " + gastoDto.categoriaId + " ");
             // Realize a solicitação HTTP POST para o endpoint 'gasto'
             const response = await axios.post('http://192.168.5.241:8080/gasto', gastoDto, {
                 headers: {
@@ -77,7 +77,7 @@ const CriarGastoScreen = ({ navigation }) => {
                 setUserId(3);
                 setNome('');
                 setValor('');
-                setDataCompra(new Date());
+                setData(new Date());
                 setCategoriaId([]);
                 alert('Gasto criado com sucesso!');
                 navigation.navigate('Gastos');
@@ -92,13 +92,13 @@ const CriarGastoScreen = ({ navigation }) => {
     };
 
     const showDatepicker = () => {
-        setShowDataCompra(true);
+        setShowData(true);
     };
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate;
-        setShowDataCompra(false);
-        setDataCompra(currentDate);
+        setShowData(false);
+        setData(currentDate);
     };
 
     const onChangeValor = (event) => {
@@ -153,15 +153,15 @@ const CriarGastoScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.dateInput}
                     placeholder="Data da compra (AAAA-MM-DD)"
-                    value={convertDateBR(dataCompra)}
+                    value={convertDateBR(data)}
                     editable={false}
                 />
                 <FontAwesomeIcon icon={faCalendar} style={styles.icon} />
             </TouchableOpacity>
-            {showDataCompra && (
+            {showData && (
                 <DateTimePicker
                     testID="dateTimePicker"
-                    value={dataCompra}
+                    value={data}
                     mode="date"
                     is24Hour={true}
                     onChange={onChangeDate}

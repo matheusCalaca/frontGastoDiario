@@ -7,6 +7,7 @@ import CriarGastoScreen from './screens/CriarGastoScreen';
 import LoginScreen from './screens/LoginScreen';
 import StorageUtil from './util/StorageUtil';
 import AuthContext from './util/AuthContext'; // Importando o contexto de autenticação
+import GanhoScreen from './screens/GanhoScreen';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,7 @@ export default function App() {
           {userToken ? (
             <>
               <Stack.Screen name="Gastos" component={GastosScreen} options={({ route }) => header("Gastos", !!route.params?.userToken)} />
+              <Stack.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
               <Stack.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Gasto", !!route.params?.userToken)} />
             </>
           ) : (

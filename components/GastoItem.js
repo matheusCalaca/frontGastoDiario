@@ -19,7 +19,7 @@ const GastoItem = ({ gasto }) => {
       <View style={styles.itemRow}>
         <FontAwesomeIcon icon={faCalendarAlt} style={styles.icon} />
         <Text style={styles.itemText}>
-          {convertDateBR(parseDate(gasto.dataCompra))}
+          {convertDateBR(parseDate(gasto.data))}
         </Text>
       </View>
       <View style={styles.itemRow}>

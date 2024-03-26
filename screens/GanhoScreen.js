@@ -5,10 +5,9 @@ import StorageUtil from '../util/StorageUtil';
 import GastosList from '../components/GastosList'
 import AddGastoButton from '../components/AddGastoButton'
 import MonthYearSelector from '../components/MonthYearSelector';
-import ResumoGastoComponent from '../components/ResumoGastoComponent';
 
-const GastosScreen = ({ navigation }) => {
-    const [gastos, setGastos] = useState([]);
+const GanhoScreen = ({ navigation }) => {
+    const [ganhos, setGanhos] = useState([]);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -20,7 +19,7 @@ const GastosScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (accessToken) {
-            fetchGastos();
+            fetchGanhos();
         }
     }, [accessToken, selectedMonth, selectedYear]);
 
@@ -29,38 +28,35 @@ const GastosScreen = ({ navigation }) => {
         setAccessToken(token);
     };
 
-    const fetchGastos = async () => {
+    const fetchGanhos = async () => {
         try {
             const response = await axios.get(
-                `http://192.168.5.241:8080/gasto/3/${selectedMonth}/${selectedYear}`,
+                `http://192.168.5.241:8080/ganho/3/${selectedMonth}/${selectedYear}`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
                 }
             );
-            setGastos(response.data);
+            setGanhos(response.data);
         } catch (error) {
-            console.error('Erro ao buscar gastos:', error);
+            console.error('Erro ao buscar ganhos:', error);
         }
     };
 
     const handleMonthChange = (newMonth) => {
         setSelectedMonth(newMonth);
-        fetchGastos();
+        fetchGanhos();
     };
 
     const handleYearChange = (newYear) => {
         setSelectedYear(newYear);
-        fetchGastos();
+        fetchGanhos();
     };
 
     return (
         <>
             <View style={styles.container}>
-                <View style={styles.container}>
-                    <ResumoGastoComponent userId={3} month={selectedMonth} year={selectedYear} />
-                </View>
                 <MonthYearSelector
                     selectedMonth={selectedMonth}
                     selectedYear={selectedYear}
@@ -68,10 +64,8 @@ const GastosScreen = ({ navigation }) => {
                     onYearChange={handleYearChange}
                 />
 
-                <Text style={styles.title}>Gastos do Usuário Calaça</Text>
-                <GastosList gastos={gastos} onRefresh={fetchGastos} />
-                <AddGastoButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} />
-                <AddGastoButton titulo="GANHOS" onPress={() => navigation.navigate('Ganhos')} />
+                <Text style={styles.title}>Ganhos do Usuário Calaça</Text>
+                <GastosList gastos={ganhos} onRefresh={fetchGanhos} />
             </View>
         </>
     );
@@ -91,4 +85,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GastosScreen;
+export default GanhoScreen;
