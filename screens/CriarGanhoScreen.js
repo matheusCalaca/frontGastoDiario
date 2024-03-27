@@ -9,7 +9,7 @@ import { TextInputMask } from 'react-native-masked-text';
 import { convertDateBR } from '../util/utils';
 import StorageUtil from '../util/StorageUtil';
 
-const CriarGastoScreen = ({ navigation }) => {
+const CriarGanhoScreen = ({ navigation }) => {
     const [userId, setUserId] = useState(3);
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
@@ -42,7 +42,7 @@ const CriarGastoScreen = ({ navigation }) => {
     // Função para buscar categorias do backend
     const fetchCategorias = async () => {
         try {
-            const response = await axios.get('http://192.168.5.241:8080/categoria/GASTO', {
+            const response = await axios.get('http://192.168.5.241:8080/categoria/GANHO', {
                 headers: {
                     Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
                 }
@@ -54,18 +54,18 @@ const CriarGastoScreen = ({ navigation }) => {
     };
 
 
-    const criarGasto = async () => {
+    const criarGanho = async () => {
         try {
-            const gastoDto = {
+            const ganhoDto = {
                 userId: userId,
                 nome: nome,
                 valor: parseFloat(valor), // Converta o valor para um número
                 data: convertDate(data),
                 categoriaId: categoriaId
             }
-            console.log("tentativa de criação " + gastoDto.nome + " " + gastoDto.valor + " " + gastoDto.data + " " + gastoDto.categoriaId + " ");
-            // Realize a solicitação HTTP POST para o endpoint 'gasto'
-            const response = await axios.post('http://192.168.5.241:8080/gasto', gastoDto, {
+            console.log("tentativa de criação " + ganhoDto.nome + " " + ganhoDto.valor + " " + ganhoDto.data + " " + ganhoDto.categoriaId + " ");
+            // Realize a solicitação HTTP POST para o endpoint 'ganho'
+            const response = await axios.post('http://192.168.5.241:8080/ganho', ganhoDto, {
                 headers: {
                     Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
                 }
@@ -79,15 +79,15 @@ const CriarGastoScreen = ({ navigation }) => {
                 setValor('');
                 setData(new Date());
                 setCategoriaId([]);
-                alert('Gasto criado com sucesso!');
-                navigation.navigate('Gastos');
+                alert('ganho criado com sucesso!');
+                navigation.navigate('Ganhos');
             } else {
                 // Se houver um erro na solicitação, exiba uma mensagem de erro
-                alert('Erro ao criar gasto. Tente novamente mais tarde.');
+                alert('Erro ao criar ganho. Tente novamente mais tarde.');
             }
         } catch (error) {
             // Se houver um erro durante a solicitação, exiba uma mensagem de erro
-            alert('Erro ao criar gasto: ' + error.message);
+            alert('Erro ao criar ganho: ' + error.message);
         }
     };
 
@@ -131,7 +131,7 @@ const CriarGastoScreen = ({ navigation }) => {
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
-                placeholder="Nome do gasto"
+                placeholder="Nome do ganho"
                 value={nome}
                 onChangeText={setNome}
             />
@@ -177,7 +177,7 @@ const CriarGastoScreen = ({ navigation }) => {
                     <Picker.Item key={categoria.id} label={categoria.categoria} value={categoria.id} />
                 ))}
             </Picker>
-            <Button title="Criar Gasto" onPress={criarGasto} />
+            <Button title="Criar Gasto" onPress={criarGanho} />
         </View>
     );
 };
@@ -220,4 +220,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CriarGastoScreen;
+export default CriarGanhoScreen;

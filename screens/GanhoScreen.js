@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
-import GastosList from '../components/PersonalizationList'
-import AddGastoButton from '../components/PersonalizationButton'
+import PersonalizationList from '../components/PersonalizationList'
 import MonthYearSelector from '../components/MonthYearSelector';
+import PersonalizationButton from '../components/PersonalizationButton';
 
 const GanhoScreen = ({ navigation }) => {
     const [ganhos, setGanhos] = useState([]);
@@ -65,7 +65,9 @@ const GanhoScreen = ({ navigation }) => {
                 />
 
                 <Text style={styles.title}>Ganhos do Usuário Calaça</Text>
-                <GastosList gastos={ganhos} onRefresh={fetchGanhos} />
+                <PersonalizationList dataItens={ganhos} onRefresh={fetchGanhos} />
+                <PersonalizationButton titulo="Add Ganho" onPress={() => navigation.navigate('CriarGanho')} />
+
             </View>
         </>
     );

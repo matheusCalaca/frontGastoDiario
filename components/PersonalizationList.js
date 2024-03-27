@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import PersonalizadoItem from './PersonalizadoItem';
 
-const PersonalizationList = ({ gastos, onRefresh }) => {
+const PersonalizationList = ({  dataItens, onRefresh }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const renderItem = ({ item }) => <PersonalizadoItem gasto={item} />;
 
   return (
     <FlatList
-      data={gastos}
+      data={dataItens}
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}
       refreshControl={
