@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
-import GastosList from '../components/GastosList'
-import AddGastoButton from '../components/AddGastoButton'
+import GastosList from '../components/PersonalizationList'
+import PersonalizationButton from '../components/PersonalizationButton'
 import MonthYearSelector from '../components/MonthYearSelector';
 import ResumoGastoComponent from '../components/ResumoGastoComponent';
 
@@ -70,8 +70,8 @@ const GastosScreen = ({ navigation }) => {
 
                 <Text style={styles.title}>Gastos do Usuário Calaça</Text>
                 <GastosList gastos={gastos} onRefresh={fetchGastos} />
-                <AddGastoButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} />
-                <AddGastoButton titulo="GANHOS" onPress={() => navigation.navigate('Ganhos')} />
+                <PersonalizationButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} />
+                <PersonalizationButton titulo="GANHOS" onPress={() => navigation.navigate('Ganhos')} />
             </View>
         </>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const AddGastoButton = ({ onPress, titulo }) => {
+const PersonalizationButton = ({ onPress, titulo }) => {
   return (
     <TouchableOpacity style={styles.addButton} onPress={onPress}>
       <Text style={styles.addButtonText}>{titulo}</Text>
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddGastoButton;
+export default PersonalizationButton;

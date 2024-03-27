@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
-import GastosList from '../components/GastosList'
-import AddGastoButton from '../components/AddGastoButton'
+import GastosList from '../components/PersonalizationList'
+import AddGastoButton from '../components/PersonalizationButton'
 import MonthYearSelector from '../components/MonthYearSelector';
 
 const GanhoScreen = ({ navigation }) => {

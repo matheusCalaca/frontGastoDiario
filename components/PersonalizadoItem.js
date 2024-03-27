@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendarAlt, faTags, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { convertDateBR, parseDate } from '../util/utils';
 
-const GastoItem = ({ gasto }) => {
+const PersonalizadoItem = ({ gasto }) => {
   if (!gasto) {
     return <Text>Erro: Item de gasto inválido.</Text>;
   }
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GastoItem;
+export default PersonalizadoItem;

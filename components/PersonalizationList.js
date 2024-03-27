@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import GastoItem from './GastoItem';
+import PersonalizadoItem from './PersonalizadoItem';
 
-const GastosList = ({ gastos, onRefresh }) => {
+const PersonalizationList = ({ gastos, onRefresh }) => {
   const [refreshing, setRefreshing] = useState(false);
 
-  const renderItem = ({ item }) => <GastoItem gasto={item} />;
+  const renderItem = ({ item }) => <PersonalizadoItem gasto={item} />;
 
   return (
     <FlatList
@@ -19,4 +19,4 @@ const GastosList = ({ gastos, onRefresh }) => {
   );
 };
 
-export default GastosList;
+export default PersonalizationList;
