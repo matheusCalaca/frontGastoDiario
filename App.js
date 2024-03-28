@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet, Button } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import GastosScreen from './screens/GastosScreen';
 import CriarGastoScreen from './screens/CriarGastoScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -10,7 +10,7 @@ import AuthContext from './util/AuthContext'; // Importando o contexto de autent
 import GanhoScreen from './screens/GanhoScreen';
 import CriarGanhoScreen from './screens/CriarGanhoScreen';
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [userToken, setUserToken] = useState(null);
@@ -38,7 +38,7 @@ export default function App() {
       headerStyle: {
         backgroundColor: '#28023d',
       },
-      headerRight: () =>  (
+      headerRight: () => (
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <View style={styles.buttonContainer}>
             <Text style={styles.logoutButtonText}>Logout</Text>
@@ -55,22 +55,22 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ userToken, setToken }}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Drawer.Navigator>
           {userToken ? (
             <>
-              <Stack.Screen name="Gastos" component={GastosScreen} options={({ route }) => header("Gastos", !!route.params?.userToken)} />
-              <Stack.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
-              <Stack.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Gasto", !!route.params?.userToken)} />
-              <Stack.Screen name="CriarGanho" component={CriarGanhoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
+              <Drawer.Screen name="Gastos" component={GastosScreen}  options={({ route }) => header("Gastos", !!route.params?.userToken)}  />
+              <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen}  options={({ route }) => header("Criar Ganho", !!route.params?.userToken)}  />
+              <Drawer.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
+              <Drawer.Screen name="CriarGasto" component={CriarGastoScreen}  options={({ route }) => header("Criar Ganho", !!route.params?.userToken)}/>
             </>
           ) : (
-            <Stack.Screen name="Login" component={LoginScreen} />
+            <Drawer.Screen name="Login" component={LoginScreen} />
           )}
-        </Stack.Navigator>
+        </Drawer.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+    </AuthContext.Provider >
   );
-};
+}
 
 
 const styles = StyleSheet.create({

@@ -66,7 +66,7 @@ const GanhoScreen = ({ navigation }) => {
 
                 <Text style={styles.title}>Ganhos do Usuário Calaça</Text>
                 <PersonalizationList dataItens={ganhos} onRefresh={fetchGanhos} />
-                <PersonalizationButton titulo="Add Ganho" onPress={() => navigation.navigate('CriarGanho')} />
+                {/* <PersonalizationButton titulo="Add Ganho" onPress={() => navigation.navigate('CriarGanho')} /> */}
 
             </View>
         </>
