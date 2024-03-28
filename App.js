@@ -63,9 +63,9 @@ export default function App() {
           <Drawer.Navigator>
             <>
               <Drawer.Screen name="Gastos" component={GastosScreen} options={({ route }) => header("Gastos", !!route.params?.userToken)} />
-              <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
+              <Drawer.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Gasto", !!route.params?.userToken)} />
               <Drawer.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
-              <Drawer.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
+              <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
             </>
           </Drawer.Navigator>
         </NavigationContainer>

@@ -58,6 +58,7 @@ const GastosScreen = ({ navigation }) => {
     return (
         <>
             <View style={styles.container}>
+
                 <View style={styles.container}>
                     <ResumoGastoComponent userId={3} month={selectedMonth} year={selectedYear} />
                 </View>
@@ -72,6 +73,7 @@ const GastosScreen = ({ navigation }) => {
                 <PersonalizationList dataItens={gastos} onRefresh={fetchGastos} />
                 {/* <PersonalizationButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} /> */}
                 {/* <PersonalizationButton titulo="GANHOS" onPress={() => navigation.navigate('Ganhos')} /> */}
+                
             </View>
         </>
     );
