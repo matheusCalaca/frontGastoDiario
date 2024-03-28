@@ -21,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
 
             // Salvar o token de acesso no contexto de autenticação
             setToken(accessToken);
-            navigation.navigate('Gastos');
+            // navigation.navigate('Gastos');
         } catch (error) {
             Alert.alert('Erro', 'Usuário ou senha inválidos.');
         }

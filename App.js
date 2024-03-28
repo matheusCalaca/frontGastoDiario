@@ -9,8 +9,11 @@ import StorageUtil from './util/StorageUtil';
 import AuthContext from './util/AuthContext'; // Importando o contexto de autenticação
 import GanhoScreen from './screens/GanhoScreen';
 import CriarGanhoScreen from './screens/CriarGanhoScreen';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
 
 export default function App() {
   const [userToken, setUserToken] = useState(null);
@@ -54,20 +57,27 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={{ userToken, setToken }}>
-      <NavigationContainer>
-        <Drawer.Navigator>
-          {userToken ? (
+
+      {userToken ? (
+        <NavigationContainer>
+          <Drawer.Navigator>
             <>
-              <Drawer.Screen name="Gastos" component={GastosScreen}  options={({ route }) => header("Gastos", !!route.params?.userToken)}  />
-              <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen}  options={({ route }) => header("Criar Ganho", !!route.params?.userToken)}  />
+              <Drawer.Screen name="Gastos" component={GastosScreen} options={({ route }) => header("Gastos", !!route.params?.userToken)} />
+              <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
               <Drawer.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
-              <Drawer.Screen name="CriarGasto" component={CriarGastoScreen}  options={({ route }) => header("Criar Ganho", !!route.params?.userToken)}/>
+              <Drawer.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
             </>
-          ) : (
-            <Drawer.Screen name="Login" component={LoginScreen} />
-          )}
-        </Drawer.Navigator>
-      </NavigationContainer>
+          </Drawer.Navigator>
+        </NavigationContainer>
+      ) : (
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )
+      }
+
     </AuthContext.Provider >
   );
 }
