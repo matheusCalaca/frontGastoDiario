@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+rreção import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import { PieChart, StackedBarChart } from 'react-native-chart-kit';
 import axios from 'axios';
@@ -74,52 +74,21 @@ const ResumoGastoComponent = ({ userId, month, year }) => {
     const chartWidth = screenWidth * 0.5; // 50% da largura da tela
 
     return (
-        <>
-            <View style={styles.saldoContainer}>
-                <Text style={[styles.saldoText, { color: saldo > 0 ? '#00ff51' : 'red' }]}>
-                    Saldo: R$ {resumo.saldo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                </Text>
-                <Text style={[styles.saldoTextSub, { color: '#00ff51' }]}>
-                    ganhos: {ganhos}
-                </Text>
-                <Text style={[styles.saldoTextSub, { color: '#db3e32' }]}>
-                    gastos: {gastos}
-                </Text>
-            </View>
-            <View style={styles.container}>
-
-                <View style={styles.chartContainer}>
-                    <AnimatedPieChart
-                        data={chartData}
-                        height={80}
-                        width={chartWidth}
-                        chartConfig={{
-                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                        }}
-                        accessor="value"
-                        backgroundColor="transparent"
-                        paddingLeft={"5"}
-                        absolute
-                        progress={interpolatedValue}
-
-                    />
-
-                </View>
-
-
-            </View>
+        < >
+            <Text style={[styles.saldoText, { color: saldo > 0 ? '#00CC00' : 'red' }]}>
+                Saldo: R$ {resumo.saldo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </Text>
+            <Text style={[styles.saldoTextSub, { color: '#00CC00' }]}>
+                ganhos:R$ {ganhos.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </Text>
+            <Text style={[styles.saldoTextSub, { color: '#db3e32', marginBottom: 10 }]}>
+                gastos: R$ {gastos.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </Text>
         </>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        margin: 5,
-        borderRadius: 10,
-        height: 200,
-        flexDirection: 'row', // Define a direção dos elementos como linha
-    },
     saldoContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -130,7 +99,7 @@ const styles = StyleSheet.create({
     chartContainer: {
     },
     saldoText: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 5,
@@ -139,7 +108,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: 'bold',
         textAlign: 'center',
-        padding: 5,
     }
 });
 

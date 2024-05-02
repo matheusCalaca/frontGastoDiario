@@ -6,6 +6,7 @@ import PersonalizationList from '../components/PersonalizationList'
 import PersonalizationButton from '../components/PersonalizationButton'
 import MonthYearSelector from '../components/MonthYearSelector';
 import ResumoGastoComponent from '../components/ResumoGastoComponent';
+import { Card } from 'react-native-paper';
 
 const GastosScreen = ({ navigation }) => {
     const [gastos, setGastos] = useState([]);
@@ -59,9 +60,9 @@ const GastosScreen = ({ navigation }) => {
         <>
             <View style={styles.container}>
 
-                <View style={styles.container}>
+                <Card title="CARD WITH DIVIDER">
                     <ResumoGastoComponent userId={3} month={selectedMonth} year={selectedYear} />
-                </View>
+                </Card>
                 <MonthYearSelector
                     selectedMonth={selectedMonth}
                     selectedYear={selectedYear}
@@ -71,9 +72,9 @@ const GastosScreen = ({ navigation }) => {
 
                 <Text style={styles.title}>Gastos do Usuário Calaça</Text>
                 <PersonalizationList dataItens={gastos} onRefresh={fetchGastos} />
-                {/* <PersonalizationButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} /> */}
+                <PersonalizationButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} />
                 {/* <PersonalizationButton titulo="GANHOS" onPress={() => navigation.navigate('Ganhos')} /> */}
-                
+
             </View>
         </>
     );
