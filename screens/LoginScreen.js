@@ -1,19 +1,22 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
-import StorageUtil from '../util/StorageUtil';
+import React, { useContext, useState } from 'react';
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import AuthContext from '../util/AuthContext'; // Importando o contexto de autenticação
+import StorageUtil from '../util/StorageUtil';
+
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
 
 const LoginScreen = ({ navigation }) => {
     const { setToken } = useContext(AuthContext);
-    // const { setUserInfo } = useContext(UserInfoContext);
 
     const [username, setUsername] = useState('matheusfcalaca@gmail.com');
     const [password, setPassword] = useState('123');
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://192.168.5.241:8080/login', {
+            console.log(apiUrl);
+            const response = await axios.post(`${apiUrl}/login`, {
                 username: username,
                 password: password
             });
@@ -29,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
     const userInfo = async (jwt) => {
 
         if (jwt) {
-            const response = await axios.post('http://192.168.5.241:8080/user/info', {
+            const response = await axios.post(`${apiUrl}/user/info`, {
                 jwt: jwt
             }, {
                 headers: {

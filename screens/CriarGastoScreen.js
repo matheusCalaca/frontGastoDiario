@@ -9,6 +9,9 @@ import { TextInputMask } from 'react-native-masked-text';
 import { convertDateBR } from '../util/utils';
 import StorageUtil from '../util/StorageUtil';
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+
 const CriarGastoScreen = ({ navigation }) => {
     const [userId, setUserId] = useState('');
     const [nome, setNome] = useState('');
@@ -49,7 +52,7 @@ const CriarGastoScreen = ({ navigation }) => {
     // Função para buscar categorias do backend
     const fetchCategorias = async () => {
         try {
-            const response = await axios.get('http://192.168.5.241:8080/categoria/GASTO', {
+            const response = await axios.get(`${apiUrl}/categoria/GASTO`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
                 }
@@ -72,7 +75,7 @@ const CriarGastoScreen = ({ navigation }) => {
             }
             console.log("tentativa de criação " + gastoDto.nome + " " + gastoDto.valor + " " + gastoDto.data + " " + gastoDto.categoriaId + " ");
             // Realize a solicitação HTTP POST para o endpoint 'gasto'
-            const response = await axios.post('http://192.168.5.241:8080/gasto', gastoDto, {
+            const response = await axios.post(`${apiUrl}/gasto`, gastoDto, {
                 headers: {
                     Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
                 }

@@ -7,6 +7,9 @@ import MonthYearSelector from '../components/MonthYearSelector';
 import PersonalizationButton from '../components/PersonalizationButton';
 import { ActivityIndicator } from 'react-native-paper';
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+
 const GanhoScreen = ({ navigation }) => {
     const [ganhos, setGanhos] = useState([]);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
@@ -39,7 +42,7 @@ const GanhoScreen = ({ navigation }) => {
         try {
             if (userInfo) {
                 const response = await axios.get(
-                    `http://192.168.5.241:8080/ganho/${userInfo.id}/${selectedMonth}/${selectedYear}`,
+                    `${apiUrl}/ganho/${userInfo.id}/${selectedMonth}/${selectedYear}`,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,

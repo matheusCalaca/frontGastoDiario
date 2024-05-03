@@ -10,6 +10,9 @@ import { convertDateBR } from '../util/utils';
 import StorageUtil from '../util/StorageUtil';
 import { ActivityIndicator } from 'react-native-paper';
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+
 const CriarGanhoScreen = ({ navigation }) => {
     const [userId, setUserId] = useState('');
     const [nome, setNome] = useState('');
@@ -52,7 +55,7 @@ const CriarGanhoScreen = ({ navigation }) => {
     // Função para buscar categorias do backend
     const fetchCategorias = async () => {
         try {
-            const response = await axios.get('http://192.168.5.241:8080/categoria/GANHO', {
+            const response = await axios.get(`${apiUrl}/categoria/GANHO`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
                 }
@@ -75,7 +78,7 @@ const CriarGanhoScreen = ({ navigation }) => {
             }
             console.log("tentativa de criação " + ganhoDto.nome + " " + ganhoDto.valor + " " + ganhoDto.data + " " + ganhoDto.categoriaId + " ");
             // Realize a solicitação HTTP POST para o endpoint 'ganho'
-            const response = await axios.post('http://192.168.5.241:8080/ganho', ganhoDto, {
+            const response = await axios.post(`${apiUrl}/ganho`, ganhoDto, {
                 headers: {
                     Authorization: `Bearer ${accessToken}` // Adiciona o token ao cabeçalho Authorization
                 }

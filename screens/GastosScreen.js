@@ -8,6 +8,8 @@ import MonthYearSelector from '../components/MonthYearSelector';
 import ResumoGastoComponent from '../components/ResumoGastoComponent';
 import { ActivityIndicator, Card } from 'react-native-paper';
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
 const GastosScreen = ({ navigation }) => {
     const [gastos, setGastos] = useState([]);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
@@ -44,7 +46,7 @@ const GastosScreen = ({ navigation }) => {
             console.log(userInfo)
             if (userInfo) {
                 const response = await axios.get(
-                    `http://192.168.5.241:8080/gasto/${userInfo.id}/${selectedMonth}/${selectedYear}`,
+                    `${apiUrl}/gasto/${userInfo.id}/${selectedMonth}/${selectedYear}`,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,

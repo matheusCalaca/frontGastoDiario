@@ -5,6 +5,8 @@ import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
 
 const AnimatedPieChart = Animated.createAnimatedComponent(PieChart);
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
 
 
 const ResumoGastoComponent = ({ userId, month, year }) => {
@@ -40,7 +42,7 @@ const ResumoGastoComponent = ({ userId, month, year }) => {
 
     const fetchResumo = async () => {
         try {
-            const response = await axios.get(`http://192.168.5.241:8080/resumo/${userId}/${month}/${year}`, {
+            const response = await axios.get(`${apiUrl}/resumo/${userId}/${month}/${year}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
