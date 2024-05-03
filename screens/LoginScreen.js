@@ -25,7 +25,7 @@ const LoginScreen = ({ navigation }) => {
             // Salvar o token de acesso no contexto de autenticação
             await userInfo(accessToken)
         } catch (error) {
-            Alert.alert('Erro', `Usuário ou senha inválidos. ${error}`);
+            Alert.alert('Erro', `Usuário ou senha inválidos. ${apiUrl} ${error}`);
         }
     };
 
