@@ -14,7 +14,6 @@ const GanhoScreen = ({ navigation }) => {
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-
     useEffect(() => {
         retriveToken();
         retriveUserInfo();
@@ -77,8 +76,6 @@ const GanhoScreen = ({ navigation }) => {
 
                     <Text style={styles.title}>Ganhos do Usuário Calaça</Text>
                     <PersonalizationList dataItens={ganhos} onRefresh={fetchGanhos} />
-                    {/* <PersonalizationButton titulo="Add Ganho" onPress={() => navigation.navigate('CriarGanho')} /> */}
-
                 </View>
             ) : (
                 <View style={styles.loadingContainer}>

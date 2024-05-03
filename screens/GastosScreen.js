@@ -86,8 +86,6 @@ const GastosScreen = ({ navigation }) => {
                     <Text style={styles.title}>Canhos {userInfo.nome} </Text>
                     <PersonalizationList dataItens={gastos} onRefresh={fetchGastos} />
                     <PersonalizationButton titulo="Add Gasto" onPress={() => navigation.navigate('CriarGasto')} />
-                    {/* <PersonalizationButton titulo="GANHOS" onPress={() => navigation.navigate('Ganhos')} /> */}
-
                 </View>
             ) : (
                 <View style={styles.loadingContainer}>

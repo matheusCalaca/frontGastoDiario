@@ -3,7 +3,6 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
 import AuthContext from '../util/AuthContext'; // Importando o contexto de autenticação
-// import UserInfoContext from '../util/UserInfoContext';
 
 const LoginScreen = ({ navigation }) => {
     const { setToken } = useContext(AuthContext);
@@ -21,13 +20,9 @@ const LoginScreen = ({ navigation }) => {
             const accessToken = response.data.accessToken;
 
             // Salvar o token de acesso no contexto de autenticação
-
-
             await userInfo(accessToken)
-
-            // navigation.navigate('Gastos');
         } catch (error) {
-            Alert.alert('Erro', 'Usuário ou senha inválidos.');
+            Alert.alert('Erro', `Usuário ou senha inválidos. ${error}`);
         }
     };
 
@@ -59,9 +54,6 @@ const LoginScreen = ({ navigation }) => {
 
                 StorageUtil.storeItem("userInfo", userInfo)
                 StorageUtil.storeItem("accessToken", jwt);
-
-                console.log("user teste info");
-                console.log(StorageUtil.retrieveItem("userInfo"));
 
             }
         }
