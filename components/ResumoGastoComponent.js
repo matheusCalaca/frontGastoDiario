@@ -1,4 +1,4 @@
-rreção import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import { PieChart, StackedBarChart } from 'react-native-chart-kit';
 import axios from 'axios';

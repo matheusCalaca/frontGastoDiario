@@ -10,7 +10,7 @@ import { convertDateBR } from '../util/utils';
 import StorageUtil from '../util/StorageUtil';
 
 const CriarGastoScreen = ({ navigation }) => {
-    const [userId, setUserId] = useState(3);
+    const [userId, setUserId] = useState('');
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
     const [data, setData] = useState(new Date());
@@ -18,10 +18,12 @@ const CriarGastoScreen = ({ navigation }) => {
     const [categorias, setCategorias] = useState([]);
     const [showData, setShowData] = useState(false);
     const [showScreen, setShowScreen] = useState(false);
+    const [userInfo, setuserInfo] = useState(null);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
 
     useEffect(() => {
         retrivetoken();
+        retriveUserInfo();
     }, []);
 
     useEffect(() => {
@@ -30,7 +32,7 @@ const CriarGastoScreen = ({ navigation }) => {
             setShowScreen(true);
             console.log("token recuperado");
         }
-    }, [accessToken]);
+    }, [accessToken, userInfo, showScreen]);
 
     const retrivetoken = async () => {
         const token = await StorageUtil.retrieveItem("accessToken");
@@ -38,6 +40,11 @@ const CriarGastoScreen = ({ navigation }) => {
         setAccessToken(token);
     }
 
+    const retriveUserInfo = async () => {
+        const userInfo = await StorageUtil.retrieveItem("userInfo");
+        console.log(userInfo);
+        setuserInfo(userInfo);
+    };
 
     // Função para buscar categorias do backend
     const fetchCategorias = async () => {
@@ -74,7 +81,7 @@ const CriarGastoScreen = ({ navigation }) => {
             // Verifique a resposta da solicitação
             if (response.status === 201) {
                 // Se a solicitação for bem-sucedida, faça alguma ação, como limpar os campos de entrada
-                setUserId(3);
+                setUserId(userId);
                 setNome('');
                 setValor('');
                 setData(new Date());

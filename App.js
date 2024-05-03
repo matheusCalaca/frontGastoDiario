@@ -27,6 +27,7 @@ export default function App() {
     try {
       // Remover o token de acesso
       await StorageUtil.clearItem("accessToken");
+      await StorageUtil.clearItem("userInfo");
       // Limpar o estado do token
       setUserToken(null)
     } catch (error) {
@@ -58,25 +59,25 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ userToken, setToken }}>
 
-      {userToken ? (
-        <NavigationContainer>
-          <Drawer.Navigator>
-            <>
-              <Drawer.Screen name="Gastos" component={GastosScreen} options={({ route }) => header("Gastos", !!route.params?.userToken)} />
-              <Drawer.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Gasto", !!route.params?.userToken)} />
-              <Drawer.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
-              <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
-            </>
-          </Drawer.Navigator>
-        </NavigationContainer>
-      ) : (
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Login" component={LoginScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      )
-      }
+        {userToken ? (
+          <NavigationContainer>
+            <Drawer.Navigator>
+              <>
+                <Drawer.Screen name="Gastos" component={GastosScreen} options={({ route }) => header("Gastos", !!route.params?.userToken)} />
+                <Drawer.Screen name="CriarGasto" component={CriarGastoScreen} options={({ route }) => header("Criar Gasto", !!route.params?.userToken)} />
+                <Drawer.Screen name="Ganhos" component={GanhoScreen} options={({ route }) => header("Ganhos", !!route.params?.userToken)} />
+                <Drawer.Screen name="CriarGanho" component={CriarGanhoScreen} options={({ route }) => header("Criar Ganho", !!route.params?.userToken)} />
+              </>
+            </Drawer.Navigator>
+          </NavigationContainer>
+        ) : (
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Login" component={LoginScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        )
+        }
 
     </AuthContext.Provider >
   );

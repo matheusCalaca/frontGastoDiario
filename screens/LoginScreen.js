@@ -3,9 +3,11 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import StorageUtil from '../util/StorageUtil';
 import AuthContext from '../util/AuthContext'; // Importando o contexto de autenticação
+// import UserInfoContext from '../util/UserInfoContext';
 
 const LoginScreen = ({ navigation }) => {
     const { setToken } = useContext(AuthContext);
+    // const { setUserInfo } = useContext(UserInfoContext);
 
     const [username, setUsername] = useState('matheusfcalaca@gmail.com');
     const [password, setPassword] = useState('123');
@@ -17,15 +19,54 @@ const LoginScreen = ({ navigation }) => {
                 password: password
             });
             const accessToken = response.data.accessToken;
-            StorageUtil.storeItem("accessToken", accessToken)
 
             // Salvar o token de acesso no contexto de autenticação
-            setToken(accessToken);
+
+
+            await userInfo(accessToken)
+
             // navigation.navigate('Gastos');
         } catch (error) {
             Alert.alert('Erro', 'Usuário ou senha inválidos.');
         }
     };
+
+    const userInfo = async (jwt) => {
+
+        if (jwt) {
+            const response = await axios.post('http://192.168.5.241:8080/user/info', {
+                jwt: jwt
+            }, {
+                headers: {
+                    Authorization: `Bearer ${jwt}` // Adiciona o token ao cabeçalho Authorization
+                }
+            });
+
+            console.log(response.data);
+            if (response) {
+                const userInfo = {
+                    id: response.data.id,
+                    cpf: response.data.cpf,
+                    nome: response.data.nome,
+                    email: response.data.email
+                };
+
+                console.log("userInfo");
+                console.log(userInfo);
+
+                // setUserInfo(userInfo);
+                setToken(jwt);
+
+                StorageUtil.storeItem("userInfo", userInfo)
+                StorageUtil.storeItem("accessToken", jwt);
+
+                console.log("user teste info");
+                console.log(StorageUtil.retrieveItem("userInfo"));
+
+            }
+        }
+
+    }
 
     return (
         <View style={styles.container}>

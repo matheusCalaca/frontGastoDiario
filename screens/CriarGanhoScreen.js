@@ -8,9 +8,10 @@ import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { TextInputMask } from 'react-native-masked-text';
 import { convertDateBR } from '../util/utils';
 import StorageUtil from '../util/StorageUtil';
+import { ActivityIndicator } from 'react-native-paper';
 
 const CriarGanhoScreen = ({ navigation }) => {
-    const [userId, setUserId] = useState(3);
+    const [userId, setUserId] = useState('');
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
     const [data, setData] = useState(new Date());
@@ -18,19 +19,28 @@ const CriarGanhoScreen = ({ navigation }) => {
     const [categorias, setCategorias] = useState([]);
     const [showData, setShowData] = useState(false);
     const [showScreen, setShowScreen] = useState(false);
+    const [userInfo, setuserInfo] = useState(null);
     const [accessToken, setAccessToken] = useState(null); // Estado para armazenar o accessToken
 
     useEffect(() => {
         retrivetoken();
+        retriveUserInfo();
     }, []);
 
+    const retriveUserInfo = async () => {
+        const userInfo = await StorageUtil.retrieveItem("userInfo");
+        console.log(userInfo);
+        setuserInfo(userInfo);
+    };
+
     useEffect(() => {
-        if (accessToken) {
+        if (accessToken && userInfo) {
             fetchCategorias();
             setShowScreen(true);
+            setUserId(userInfo.id)
             console.log("token recuperado");
         }
-    }, [accessToken]);
+    }, [accessToken, userInfo, showScreen]);
 
     const retrivetoken = async () => {
         const token = await StorageUtil.retrieveItem("accessToken");
@@ -74,7 +84,7 @@ const CriarGanhoScreen = ({ navigation }) => {
             // Verifique a resposta da solicitação
             if (response.status === 201) {
                 // Se a solicitação for bem-sucedida, faça alguma ação, como limpar os campos de entrada
-                setUserId(3);
+                setUserId(userId);
                 setNome('');
                 setValor('');
                 setData(new Date());
@@ -128,57 +138,65 @@ const CriarGanhoScreen = ({ navigation }) => {
 
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Nome do ganho"
-                value={nome}
-                onChangeText={setNome}
-            />
-            <TextInputMask
-                style={styles.input}
-                placeholder="Valor"
-                value={valor}
-                onChangeText={onChangeValor}
-                type={'money'}
-                options={{
-                    precision: 2, // número de casas decimais
-                    separator: ',', // separador decimal
-                    delimiter: '.', // separador de milhares
-                    unit: 'R$', // símbolo da moeda
-                    suffixUnit: '', // sufixo da unidade (por exemplo, 'USD')
-                }}
-            />
-            <TouchableOpacity onPressIn={showDatepicker} style={styles.dateInputContainer}>
-                <TextInput
-                    style={styles.dateInput}
-                    placeholder="Data da compra (AAAA-MM-DD)"
-                    value={convertDateBR(data)}
-                    editable={false}
-                />
-                <FontAwesomeIcon icon={faCalendar} style={styles.icon} />
-            </TouchableOpacity>
-            {showData && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={data}
-                    mode="date"
-                    is24Hour={true}
-                    onChange={onChangeDate}
-                />
+        <>
+            {showScreen ? (
+                <View style={styles.container}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nome do ganho"
+                        value={nome}
+                        onChangeText={setNome}
+                    />
+                    <TextInputMask
+                        style={styles.input}
+                        placeholder="Valor"
+                        value={valor}
+                        onChangeText={onChangeValor}
+                        type={'money'}
+                        options={{
+                            precision: 2, // número de casas decimais
+                            separator: ',', // separador decimal
+                            delimiter: '.', // separador de milhares
+                            unit: 'R$', // símbolo da moeda
+                            suffixUnit: '', // sufixo da unidade (por exemplo, 'USD')
+                        }}
+                    />
+                    <TouchableOpacity onPressIn={showDatepicker} style={styles.dateInputContainer}>
+                        <TextInput
+                            style={styles.dateInput}
+                            placeholder="Data da compra (AAAA-MM-DD)"
+                            value={convertDateBR(data)}
+                            editable={false}
+                        />
+                        <FontAwesomeIcon icon={faCalendar} style={styles.icon} />
+                    </TouchableOpacity>
+                    {showData && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={data}
+                            mode="date"
+                            is24Hour={true}
+                            onChange={onChangeDate}
+                        />
+                    )}
+                    <Picker
+                        selectedValue={categoriaId}
+                        style={styles.input}
+                        onValueChange={(itemValue, itemIndex) => setCategoriaId(itemValue)}
+                    >
+                        <Picker.Item label="Selecione uma categoria" value="" />
+                        {categorias.map((categoria) => (
+                            <Picker.Item key={categoria.id} label={categoria.categoria} value={categoria.id} />
+                        ))}
+                    </Picker>
+                    <Button title="Criar Gasto" onPress={criarGanho} />
+                </View>
+            ) : (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#007bff" />
+                </View>
             )}
-            <Picker
-                selectedValue={categoriaId}
-                style={styles.input}
-                onValueChange={(itemValue, itemIndex) => setCategoriaId(itemValue)}
-            >
-                <Picker.Item label="Selecione uma categoria" value="" />
-                {categorias.map((categoria) => (
-                    <Picker.Item key={categoria.id} label={categoria.categoria} value={categoria.id} />
-                ))}
-            </Picker>
-            <Button title="Criar Gasto" onPress={criarGanho} />
-        </View>
+        </>
     );
 };
 
@@ -217,6 +235,12 @@ const styles = StyleSheet.create({
         marginRight: 10,
         fontSize: 20,
         color: '#888',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
     },
 });
 
